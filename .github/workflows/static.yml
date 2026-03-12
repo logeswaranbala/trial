@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IMG → PDF · Maker</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- jsPDF from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- ═══════════ HEADER ═══════════ -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">⬛</span>
+        <span class="logo-text">IMG<span class="logo-arrow">→</span>PDF</span>
+      </div>
+      <p class="tagline">Drop images. Set options. Get PDF.</p>
+    </div>
+    <div class="header-line"></div>
+  </header>
+
+  <!-- ═══════════ MAIN ═══════════ -->
+  <main class="main">
+
+    <!-- ── DROP ZONE ── -->
+    <section class="drop-section">
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-inner">
+          <div class="drop-icon">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <rect x="8" y="6" width="32" height="36" rx="2" stroke="currentColor" stroke-width="2"/>
+              <path d="M16 20 L22 14 L28 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="22" y1="14" x2="22" y2="30" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="14" y1="36" x2="30" y2="36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p class="drop-title">Drag &amp; drop images here</p>
+          <p class="drop-sub">or click to browse files</p>
+          <p class="drop-formats">JPG · JPEG · PNG · WEBP</p>
+          <button class="btn-browse" id="browseBtn">Select Files</button>
+          <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.webp" multiple hidden />
+        </div>
+      </div>
+    </section>
+
+    <!-- ── STATS BAR ── -->
+    <div class="stats-bar" id="statsBar" style="display:none;">
+      <div class="stat">
+        <span class="stat-num" id="statCount">0</span>
+        <span class="stat-label">Images</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num" id="statSize">0 KB</span>
+        <span class="stat-label">Total Size</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <button class="btn-clear" id="clearBtn">✕ Clear All</button>
+      </div>
+    </div>
+
+    <!-- ── IMAGE GRID ── -->
+    <section class="grid-section" id="gridSection" style="display:none;">
+      <div class="section-header">
+        <h2 class="section-title">Image Queue</h2>
+        <p class="section-hint">Drag cards to reorder · Click ✕ to remove</p>
+      </div>
+      <div class="image-grid" id="imageGrid"></div>
+    </section>
+
+    <!-- ── OPTIONS ── -->
+    <section class="options-section" id="optionsSection" style="display:none;">
+      <div class="section-header">
+        <h2 class="section-title">PDF Options</h2>
+      </div>
+      <div class="options-grid">
+
+        <div class="option-group">
+          <label class="option-label">Page Size</label>
+          <div class="toggle-group" id="pageSizeGroup">
+            <button class="toggle-btn active" data-value="a4">A4</button>
+            <button class="toggle-btn" data-value="letter">Letter</button>
+          </div>
+        </div>
+
+        <div class="option-group">
+          <label class="option-label">Orientation</label>
+          <div class="toggle-group" id="orientationGroup">
+            <button class="toggle-btn active" data-value="portrait">
+              <svg width="12" height="16" viewBox="0 0 12 16"><rect x="1" y="1" width="10" height="14" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+              Portrait
+            </button>
+            <button class="toggle-btn" data-value="landscape">
+              <svg width="16" height="12" viewBox="0 0 16 12"><rect x="1" y="1" width="14" height="10" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+              Landscape
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── GENERATE BUTTON ── -->
+    <section class="generate-section" id="generateSection" style="display:none;">
+      <button class="btn-generate" id="generateBtn">
+        <span class="btn-generate-text">Generate PDF</span>
+        <span class="btn-generate-arrow">→</span>
+      </button>
+    </section>
+
+    <!-- ── LOADING ── -->
+    <div class="loading-overlay" id="loadingOverlay" style="display:none;">
+      <div class="loading-box">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Building your PDF<span class="loading-dots"></span></p>
+        <p class="loading-sub" id="loadingProgress">Processing images…</p>
+      </div>
+    </div>
+
+    <!-- ── DOWNLOAD ── -->
+    <section class="download-section" id="downloadSection" style="display:none;">
+      <div class="download-card">
+        <div class="download-icon">✓</div>
+        <div class="download-info">
+          <p class="download-title">PDF Ready</p>
+          <p class="download-meta" id="downloadMeta"></p>
+        </div>
+        <a class="btn-download" id="downloadLink" download="images.pdf">Download PDF</a>
+      </div>
+      <button class="btn-reset" id="resetBtn">← Start Over</button>
+    </section>
+
+  </main>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="footer">
+    <p>All processing happens locally in your browser. No files are uploaded.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
